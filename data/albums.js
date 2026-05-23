@@ -1,0 +1,68 @@
+const albums = [
+  {
+    slug: "trails-of-dolomites",
+    title: "Trails of Dolomites",
+    location: "Dolomites, Italy",
+    year: 2024,
+    coverImage: "https://picsum.photos/seed/dolomites-cover/1600/1000",
+    country: "IT",
+    photos: [
+      "https://picsum.photos/seed/dolomites-1/1600/1000",
+      "https://picsum.photos/seed/dolomites-2/1600/1000",
+      "https://picsum.photos/seed/dolomites-3/1600/1000",
+      "https://picsum.photos/seed/dolomites-4/1600/1000",
+      "https://picsum.photos/seed/dolomites-5/1600/1000",
+      "https://picsum.photos/seed/dolomites-6/1600/1000",
+    ],
+  },
+  {
+    slug: "after-hours",
+    title: "After Hours",
+    location: "Tokyo, Japan",
+    year: 2024,
+    coverImage: "https://picsum.photos/seed/afterhours-cover/1600/1000",
+    country: "JP",
+    photos: [
+      "https://picsum.photos/seed/afterhours-1/1600/1000",
+      "https://picsum.photos/seed/afterhours-2/1600/1000",
+      "https://picsum.photos/seed/afterhours-3/1600/1000",
+      "https://picsum.photos/seed/afterhours-4/1600/1000",
+      "https://picsum.photos/seed/afterhours-5/1600/1000",
+      "https://picsum.photos/seed/afterhours-6/1600/1000",
+    ],
+  },
+  {
+    slug: "feels-like-summer",
+    title: "Feels Like Summer",
+    location: "Lisbon, Portugal",
+    year: 2023,
+    coverImage: "https://picsum.photos/seed/summer-cover/1600/1000",
+    country: "PT",
+    photos: [
+      "https://picsum.photos/seed/summer-1/1600/1000",
+      "https://picsum.photos/seed/summer-2/1600/1000",
+      "https://picsum.photos/seed/summer-3/1600/1000",
+      "https://picsum.photos/seed/summer-4/1600/1000",
+      "https://picsum.photos/seed/summer-5/1600/1000",
+      "https://picsum.photos/seed/summer-6/1600/1000",
+    ],
+  },
+  {
+    slug: "the-eastern-front",
+    title: "The Eastern Front",
+    location: "Berlin, Germany",
+    year: 2023,
+    coverImage: "https://picsum.photos/seed/eastern-cover/1600/1000",
+    country: "DE",
+    photos: [
+      "https://picsum.photos/seed/eastern-1/1600/1000",
+      "https://picsum.photos/seed/eastern-2/1600/1000",
+      "https://picsum.photos/seed/eastern-3/1600/1000",
+      "https://picsum.photos/seed/eastern-4/1600/1000",
+      "https://picsum.photos/seed/eastern-5/1600/1000",
+      "https://picsum.photos/seed/eastern-6/1600/1000",
+    ],
+  },
+];
+
+export default albums;
