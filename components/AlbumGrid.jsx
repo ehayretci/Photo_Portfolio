@@ -3,9 +3,11 @@ import AlbumCard from "./AlbumCard";
 
 export default function AlbumGrid() {
   return (
-    <div className="grid grid-cols-1 gap-x-6 gap-y-16 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-20 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-24">
+    <div className="grid grid-cols-1 gap-px bg-hairline sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {albums.map((album) => (
-        <AlbumCard key={album.slug} album={album} />
+        <div key={album.slug} className="bg-page">
+          <AlbumCard album={album} />
+        </div>
       ))}
     </div>
   );

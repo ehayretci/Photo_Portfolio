@@ -1,5 +1,7 @@
+import Link from "next/link";
 import albums from "@/data/albums";
 import PhotoGrid from "@/components/PhotoGrid";
+import Footer from "@/components/Footer";
 
 export function generateStaticParams() {
   return albums.map((a) => ({ slug: a.slug }));
@@ -10,36 +12,46 @@ export default function AlbumPage({ params }) {
 
   if (!album) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-6 text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted">
-          404
-        </p>
-        <h1 className="mt-4 font-serif text-4xl italic text-ink md:text-5xl">
+      <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-center">
+        <p className="ui-label text-muted">404</p>
+        <h1 className="mt-4 font-title text-5xl uppercase tracking-[0.12em] text-ink md:text-6xl">
           Album not found
         </h1>
+        <Link
+          href="/"
+          className="ui-label mt-8 text-ink transition-colors hover:text-accent"
+        >
+          ← Back to gallery
+        </Link>
       </div>
     );
   }
 
   return (
-    <article className="mx-auto w-full max-w-7xl px-6 pb-40 pt-20 md:px-10 md:pt-28">
-      <header className="mx-auto max-w-3xl text-center">
-        <h1 className="font-serif italic text-5xl leading-tight text-ink md:text-7xl">
-          {album.title}
-        </h1>
-        <p className="mt-6 font-mono text-xs uppercase tracking-[0.3em] text-muted">
-          {album.location} — {album.year}
-        </p>
-        <p className="mt-8 font-serif text-lg leading-relaxed text-muted md:text-xl">
-          A short field note from {album.location}. Frames gathered on foot,
-          mostly at the edges of the day — early light, late shadows, and the
-          quiet hours in between.
-        </p>
-      </header>
+    <>
+      <article className="mx-auto w-full max-w-[1600px] px-6 pb-24 pt-28 md:px-12 md:pt-32">
+        <Link
+          href="/#photography"
+          className="ui-label inline-block text-muted transition-colors hover:text-accent"
+        >
+          ← All albums
+        </Link>
 
-      <hr className="mx-auto my-16 w-full max-w-5xl border-t border-stone-800/70 md:my-24" />
+        <header className="mt-12 flex items-end justify-between border-b border-hairline pb-8">
+          <div>
+            <p className="ui-label text-muted">{album.location}</p>
+            <h1 className="mt-3 font-title text-5xl uppercase tracking-[0.12em] text-ink md:text-7xl">
+              {album.title}
+            </h1>
+          </div>
+          <p className="ui-label text-muted">{album.year}</p>
+        </header>
 
-      <PhotoGrid photos={album.photos} />
-    </article>
+        <div className="mt-12">
+          <PhotoGrid photos={album.photos} />
+        </div>
+      </article>
+      <Footer />
+    </>
   );
 }

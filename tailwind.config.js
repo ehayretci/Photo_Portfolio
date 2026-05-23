@@ -8,14 +8,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        page: "#0c0a09",        // stone-950 — page background
-        ink: "#fef3c7",         // amber-100 — primary warm text
-        muted: "#d6d3d1",       // stone-300 — secondary text
-        accent: "#b45309",      // amber-700 — accent
+        page: "#ffffff",
+        canvas: "#f9f9f9",
+        ink: "#0c0a09",
+        muted: "#707070",
+        subtle: "#9ca3af",
+        hairline: "#e5e7eb",
+        accent: "#eb2f96",
       },
       fontFamily: {
-        serif: ["var(--font-playfair)", "ui-serif", "Georgia", "serif"],
-        mono: ["var(--font-dm-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
+        title: ["var(--font-asimovian)", "Impact", "Orbitron", "Space Grotesk", "sans-serif"],
+        sans: ["var(--font-agdasima)", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      letterSpacing: {
+        widest2: "0.32em",
+      },
+      transitionTimingFunction: {
+        silky: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },

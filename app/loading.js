@@ -1,39 +1,31 @@
 export default function Loading() {
   return (
-    <div className="flex min-h-[60vh] w-full flex-col items-center justify-center gap-6">
-      <div className="film-strip" aria-hidden="true">
-        <span />
-        <span />
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6">
+      <div className="dot-row" aria-hidden="true">
         <span />
         <span />
         <span />
       </div>
-      <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
-        Developing…
-      </p>
+      <p className="ui-label text-muted">Loading</p>
 
       <style>{`
-        .film-strip {
+        .dot-row {
           display: flex;
-          gap: 6px;
-          padding: 8px;
-          border-top: 2px solid #44403c;
-          border-bottom: 2px solid #44403c;
+          gap: 8px;
         }
-        .film-strip span {
+        .dot-row span {
           display: block;
-          width: 14px;
-          height: 20px;
-          background: #292524;
-          animation: film-flicker 1.2s ease-in-out infinite;
+          width: 8px;
+          height: 8px;
+          border-radius: 9999px;
+          background: #e5e7eb;
+          animation: dot-pulse 1.2s ease-in-out infinite;
         }
-        .film-strip span:nth-child(2) { animation-delay: 0.12s; }
-        .film-strip span:nth-child(3) { animation-delay: 0.24s; }
-        .film-strip span:nth-child(4) { animation-delay: 0.36s; }
-        .film-strip span:nth-child(5) { animation-delay: 0.48s; }
-        @keyframes film-flicker {
-          0%, 100% { background: #292524; }
-          50% { background: #b45309; }
+        .dot-row span:nth-child(2) { animation-delay: 0.18s; }
+        .dot-row span:nth-child(3) { animation-delay: 0.36s; }
+        @keyframes dot-pulse {
+          0%, 100% { background: #e5e7eb; transform: scale(1); }
+          50% { background: #eb2f96; transform: scale(1.15); }
         }
       `}</style>
     </div>

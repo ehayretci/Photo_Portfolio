@@ -1,40 +1,35 @@
-import { Playfair_Display, DM_Mono } from "next/font/google";
+import { Agdasima } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import GrainOverlay from "@/components/GrainOverlay";
-import PageTransition from "@/components/PageTransition";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+const asimovian = localFont({
+  src: "./fonts/Asimovian-Regular.ttf",
+  variable: "--font-asimovian",
   display: "swap",
+  fallback: ["Impact", "Orbitron", "Space Grotesk", "sans-serif"],
 });
 
-const dmMono = DM_Mono({
+const agdasima = Agdasima({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-mono",
+  weight: ["400", "700"],
+  variable: "--font-agdasima",
   display: "swap",
 });
 
 export const metadata = {
-  title: "Photo Portfolio",
-  description: "A photo portfolio.",
+  title: "Erim Hayretci — Photography",
+  description: "Collecting light, one city at a time.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${dmMono.variable} bg-page text-ink font-serif antialiased min-h-screen flex flex-col`}
+        className={`${asimovian.variable} ${agdasima.variable} bg-page text-ink font-sans antialiased`}
       >
         <Navbar />
-        <main className="relative flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
-        <GrainOverlay />
+        <main className="relative">{children}</main>
       </body>
     </html>
   );

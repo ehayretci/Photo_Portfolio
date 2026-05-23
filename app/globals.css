@@ -4,17 +4,88 @@
 
 html,
 body {
-  background-color: #0c0a09;
-  color: #fef3c7;
+  background-color: #ffffff;
+  color: #0c0a09;
 }
 
 body {
-  font-family: var(--font-playfair), Georgia, serif;
+  font-family: var(--font-agdasima), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .snap-wrapper {
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  .snap-section {
+    scroll-snap-align: start;
+  }
+
+  .ui-label {
+    font-family: var(--font-agdasima), ui-sans-serif, system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 11px;
+  }
+
+  .hairline-b {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .hairline-t {
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .glow-sphere {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+    filter: blur(120px);
+    background: radial-gradient(
+      circle at center,
+      rgba(235, 47, 150, 0.45) 0%,
+      rgba(235, 47, 150, 0.18) 40%,
+      rgba(235, 47, 150, 0) 70%
+    );
+  }
+
+  .glow-sphere-soft {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+    filter: blur(160px);
+    background: radial-gradient(
+      circle at center,
+      rgba(235, 47, 150, 0.32) 0%,
+      rgba(235, 47, 150, 0.12) 45%,
+      rgba(235, 47, 150, 0) 75%
+    );
+  }
+}
+
+.photo-scroll::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+.photo-scroll {
+  scrollbar-width: none;
+}
+.snap-wrapper::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+.snap-wrapper {
+  scrollbar-width: none;
 }
