@@ -1,7 +1,6 @@
 import { Agdasima } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 
 const asimovian = localFont({
   src: "./fonts/Asimovian-Regular.ttf",
@@ -26,9 +25,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${asimovian.variable} ${agdasima.variable} bg-page text-ink font-sans antialiased`}
+        className={`${asimovian.variable} ${agdasima.variable} bg-page text-ink antialiased`}
       >
-        <Navbar />
         <main className="relative">{children}</main>
       </body>
     </html>

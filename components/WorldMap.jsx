@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker,
 } from "react-simple-maps";
-import travels, { TOTAL_COUNTRIES } from "@/data/travels";
+import travels from "@/data/travels";
+import BackArrow from "./BackArrow";
 
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 const NUMERIC_TO_CODE = Object.fromEntries(
-  Object.values(travels).map((c) => [c.numericId, c.code])
+  Object.values(travels)
+    .filter((c) => /^[0-9]+$/.test(c.numericId))
+    .map((c) => [c.numericId, c.code])
 );
 
 const COLORS = {
@@ -24,13 +27,10 @@ const COLORS = {
   borderUnvisited: "#e5e7eb",
 };
 
-export default function WorldMap() {
+export default function WorldMap({ onModalChange }) {
   const [hover, setHover] = useState(null);
   const [active, setActive] = useState(null);
   const [cityHover, setCityHover] = useState(null);
-
-  const visitedCount = Object.keys(travels).length;
-  const percent = ((visitedCount / TOTAL_COUNTRIES) * 100).toFixed(1);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -41,6 +41,8 @@ export default function WorldMap() {
   }, []);
 
   useEffect(() => {
+    // Notify parent so it can hide overlay chrome (title + stats) while open.
+    if (onModalChange) onModalChange(Boolean(active));
     if (active) {
       const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
@@ -48,17 +50,20 @@ export default function WorldMap() {
         document.body.style.overflow = prev;
       };
     }
-  }, [active]);
+  }, [active, onModalChange]);
 
   return (
     <div className="relative w-full">
-      <div className="mx-auto w-full max-w-[1400px]">
+      {/* Full-bleed map. ViewBox aspect ~ 1.85:1 — fits most viewports without
+          cropping. The parent section overlays title (top-left) + stats
+          (bottom-center) on top of this SVG. */}
+      <div className="mx-auto w-full">
         <ComposableMap
           projection="geoMercator"
-          projectionConfig={{ scale: 130, center: [10, 30] }}
-          width={1100}
-          height={520}
-          style={{ width: "100%", height: "auto" }}
+          projectionConfig={{ scale: 155, center: [10, 18] }}
+          width={1480}
+          height={800}
+          style={{ width: "100%", height: "auto", display: "block" }}
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
@@ -124,14 +129,8 @@ export default function WorldMap() {
         </ComposableMap>
       </div>
 
-      <div className="mt-8 flex flex-col items-center gap-2">
-        <p className="font-title text-3xl uppercase tracking-[0.18em] text-ink md:text-4xl">
-          {visitedCount} <span className="text-muted">/</span> {TOTAL_COUNTRIES}
-        </p>
-        <p className="ui-label text-muted">
-          Countries visited · {percent}% of the world
-        </p>
-      </div>
+      {/* Stats moved to page.js overlay so they sit ABOVE the map without
+          eating into its display area. */}
 
       {hover && !active && (
         <div
@@ -141,7 +140,7 @@ export default function WorldMap() {
             top: hover.y + 14,
             pointerEvents: "none",
           }}
-          className="z-[150] border border-hairline bg-page px-3 py-1.5 ui-label text-ink shadow-sm"
+          className="z-[150] rounded-md border border-hairline bg-page px-3 py-1.5 ui-label-tight text-ink shadow-sm"
         >
           {hover.name}
         </div>
@@ -160,33 +159,51 @@ export default function WorldMap() {
 }
 
 function CountryModal({ country, onClose, cityHover, setCityHover }) {
+  const hasGeometry = /^[0-9]+$/.test(country.numericId);
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center bg-ink/40 backdrop-blur-sm p-4 md:p-8"
       onClick={onClose}
     >
       <div
-        className="relative grid h-full max-h-[90vh] w-full max-w-[1200px] grid-cols-1 overflow-hidden border border-hairline bg-page shadow-2xl md:grid-cols-2"
+        className="relative grid h-full max-h-[92vh] w-full max-w-[1200px] grid-cols-1 overflow-hidden rounded-2xl border border-hairline bg-page shadow-2xl md:grid-cols-2"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
+        <BackArrow
           onClick={onClose}
-          aria-label="Close"
-          className="absolute right-4 top-4 z-10 ui-label text-muted transition-colors hover:text-accent"
-        >
-          Close ✕
-        </button>
+          ariaLabel="Back to map"
+          className="absolute left-5 top-5 z-10"
+        />
 
-        <div className="relative flex items-center justify-center bg-canvas p-8 md:p-12">
+        <div className="relative flex items-center justify-center bg-canvas p-6 md:p-12">
           <div className="glow-sphere-soft -left-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2" />
-          <CountryShape country={country} cityHover={cityHover} setCityHover={setCityHover} />
+          {hasGeometry ? (
+            <CountryShape
+              country={country}
+              cityHover={cityHover}
+              setCityHover={setCityHover}
+            />
+          ) : (
+            <p
+              className="text-center text-muted"
+              style={{
+                fontFamily:
+                  "var(--font-agdasima), ui-sans-serif, system-ui, sans-serif",
+                fontSize: "20px",
+              }}
+            >
+              No map outline available for this region.
+            </p>
+          )}
         </div>
 
-        <div className="flex flex-col gap-8 overflow-y-auto p-8 md:p-12">
+        <div className="flex flex-col gap-8 overflow-y-auto p-8 pt-20 md:p-12 md:pt-14">
           <header>
             <p className="ui-label text-muted">Country</p>
-            <h2 className="mt-2 font-title text-5xl uppercase tracking-[0.12em] text-ink md:text-6xl">
+            <h2
+              className="mt-3 font-title uppercase text-ink"
+              style={{ fontSize: "56px", letterSpacing: "0.06em", lineHeight: 1 }}
+            >
               {country.name}
             </h2>
           </header>
@@ -195,10 +212,20 @@ function CountryModal({ country, onClose, cityHover, setCityHover }) {
             <section>
               <p className="ui-label text-accent">Lived</p>
               <div className="mt-3 border-t border-hairline pt-4">
-                <p className="font-title text-2xl uppercase tracking-[0.12em] text-ink">
+                <p
+                  className="font-title uppercase text-ink"
+                  style={{ fontSize: "32px", letterSpacing: "0.06em", lineHeight: 1.1 }}
+                >
                   {country.lived.city}
                 </p>
-                <p className="ui-label mt-2 text-muted">
+                <p
+                  className="mt-3 text-muted"
+                  style={{
+                    fontFamily:
+                      "var(--font-agdasima), ui-sans-serif, system-ui, sans-serif",
+                    fontSize: "20px",
+                  }}
+                >
                   {country.lived.start} — {country.lived.end}
                 </p>
               </div>
@@ -209,8 +236,31 @@ function CountryModal({ country, onClose, cityHover, setCityHover }) {
             <p className="ui-label text-muted">Visits</p>
             <ul className="mt-3 divide-y divide-hairline border-t border-hairline">
               {country.visits.map((v) => (
-                <li key={v} className="ui-label py-3 text-ink">
-                  {v}
+                <li
+                  key={v.city + v.date}
+                  className="flex items-baseline justify-between gap-4 py-3"
+                >
+                  <span
+                    className="text-ink"
+                    style={{
+                      fontFamily:
+                        "var(--font-agdasima), ui-sans-serif, system-ui, sans-serif",
+                      fontSize: "20px",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {v.city}
+                  </span>
+                  <span
+                    className="text-muted"
+                    style={{
+                      fontFamily:
+                        "var(--font-agdasima), ui-sans-serif, system-ui, sans-serif",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {v.date}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -225,13 +275,13 @@ function CountryShape({ country, cityHover, setCityHover }) {
   const width = 520;
   const height = 520;
   return (
-    <div className="relative w-full max-w-[520px]">
+    <div className="relative mx-auto w-full max-w-[520px]">
       <ComposableMap
         projection="geoMercator"
-        projectionConfig={{ center: country.center, scale: country.zoom * 200 }}
+        projectionConfig={{ center: country.center, scale: country.scale }}
         width={width}
         height={height}
-        style={{ width: "100%", height: "auto" }}
+        style={{ width: "100%", height: "auto", display: "block" }}
       >
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
@@ -279,7 +329,14 @@ function CountryShape({ country, cityHover, setCityHover }) {
         ))}
       </ComposableMap>
       {cityHover && (
-        <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 border border-hairline bg-page px-3 py-1.5 ui-label text-ink shadow-sm">
+        <div
+          className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-md border border-hairline bg-page px-3 py-1.5 text-ink shadow-sm whitespace-nowrap"
+          style={{
+            fontFamily:
+              "var(--font-agdasima), ui-sans-serif, system-ui, sans-serif",
+            fontSize: "14px",
+          }}
+        >
           {cityHover.name} <span className="text-muted">· {cityHover.date}</span>
         </div>
       )}

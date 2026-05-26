@@ -4,12 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function AlbumCard({ album }) {
-  const { slug, title, location, year, coverImage } = album;
+  const { slug, title, coverImage } = album;
 
   return (
     <Link
       href={`/albums/${slug}`}
-      className="group relative block aspect-[4/5] w-full overflow-hidden bg-canvas"
+      className="group relative block aspect-[4/5] w-full overflow-hidden rounded-2xl bg-canvas"
     >
       <Image
         src={coverImage}
@@ -22,11 +22,16 @@ export default function AlbumCard({ album }) {
       <div className="pointer-events-none absolute inset-0 bg-ink/0 opacity-0 transition-all duration-700 ease-silky group-hover:bg-ink/55 group-hover:opacity-100" />
 
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center opacity-0 transition-all duration-700 ease-silky group-hover:opacity-100">
-        <h3 className="font-title text-3xl uppercase tracking-[0.18em] text-white md:text-4xl">
+        <h3
+          className="font-title uppercase text-white"
+          style={{
+            fontSize: "36px",
+            letterSpacing: "0.08em",
+            lineHeight: 1.05,
+          }}
+        >
           {title}
         </h3>
-        <p className="ui-label mt-4 text-white/80">{location}</p>
-        <p className="ui-label mt-1 text-white/60">{year}</p>
       </div>
     </Link>
   );
